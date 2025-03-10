@@ -1,39 +1,30 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { View, StyleSheet } from 'react-native';
+import FloatingBubble from './FloatingBubble'; // Import the FloatingBubble component
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
+export default function Layout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <View style={styles.container}>
+      {/* Stack Navigation */}
       <Stack>
+        {/* Welcome Page */}
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+
+        {/* Login Page */}
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+
+        {/* Tabs Navigation */}
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+
+      {/* Floating Bubble */}
+      <FloatingBubble />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // Ensure the container takes the full screen height
+  },
+});
